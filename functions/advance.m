@@ -23,7 +23,10 @@ for t = tvect
         end
         
         u = Linvfun( parms.uold + parms.dt * parms.f );
-
+        
+    elseif strcmp( parms.timestep, 'RKF45' ) %Runge-Kutta Fehlberg 
+        
+        %Put wicked awesome code here
         
     end
     
