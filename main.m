@@ -30,9 +30,9 @@ addpath('functions/')
             parms.tol = 1.0e-3;
 
             %only if parms.timestep is something other than 'no':
-            parms.T = .01; %How long to run
-            parms.dt = 0.001; %time step
-            parms.t_save = 0.001; %save every t_save interval
+            parms.T = .0001; %How long to run
+            parms.dt = 0.00001; %time step
+            parms.t_save = 0.00001; %save every t_save interval
             parms.u0 = @(x,y) (x .* y ); %initial condition
     %**
     

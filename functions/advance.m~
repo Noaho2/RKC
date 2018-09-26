@@ -48,7 +48,6 @@ while t < parms.T
         it = 0;
         while true
 
-        %Compute K_1, K_2, K_3, etc.
             for i = 1:6
                 if i == 1
                 %initialized to an array of zeros for K_1
@@ -63,16 +62,15 @@ while t < parms.T
                 K(:,i) = parms.dt .* ( parms.L * ( parms.uold + aK_sum ) + parms.f );
             end
 
-            bK_sum1 = 0; %RK4 b*K sum
-            bK_sum2 = 0; %RK5 b*K sum
+
+            bK_sum = 0.*ones(parms.ntot,2);
             for i = 1:6
-                bK_sum1 = bK_sum1 + ( b(1,i) .* K(:,i) ); 
-                bK_sum2 = bK_sum2 + ( b(2,i) .* K(:,i) ); 
+                bK_sum(:,1) = bK_sum(:,1) + b(1,i) .* K(:,i); %RK4
+                bK_sum(:,2) = bK_sum(:,2) + b(2,i) .* K(:,i); %RK5
             end 
             
-            u_RK4 = parms.uold + bK_sum1;
-            u_RK5 = parms.uold + bK_sum2;
-            
+            u_RK4 = parms.uold + bK_sum(:,1);
+            u_RK5 = parms.uold + bK_sum(:,2);
             s_array = parms.tol .* (0.5 .* abs(u_RK4 - u_RK5)).^(-0.25);
             
 %            dt_array = s_array .* dt_array;
