@@ -1,4 +1,4 @@
-clear all, close all, clc
+clear all, clc%, close all, clc
 
 addpath('functions/')
 
@@ -12,11 +12,11 @@ addpath('functions/')
 
 %---User specified parameters
     %# of grid points in x and y dirns
-    parms.dx = 1;%0.005
+    parms.dx = 0.005;
 
     %specify boundaries of domain:
-    parms.xbds = [0 5];%[-0.4 1.2];
-    parms.ybds = [0 5];%[-0.2 0.3];%[0 5];
+    parms.xbds = [-0.4 1.2];
+    parms.ybds = [-0.2 0.3];
     
     %**are we stepping in time?
         %   options are:
@@ -24,12 +24,15 @@ addpath('functions/')
         %           'FE'    : Forward Euler
         %           'BE'    : Backward Euler
         %           'RKF45' : Runge-Kutta Fehlberg  (under construction)
-        parms.timestep = 'BE';
+        parms.timestep = 'RKF45';
+        
+            % if using RKf45, specify the error control tolerance
+            parms.tol = 1.0e-3;
 
             %only if parms.timestep is something other than 'no':
-            parms.T = 1.04; %How long to run 
-            parms.dt = 0.01; %time step
-            parms.t_save = 0.1; %save every t_save interval
+            parms.T = .01; %How long to run
+            parms.dt = 0.001; %time step
+            parms.t_save = 0.001; %save every t_save interval
             parms.u0 = @(x,y) (x .* y ); %initial condition
     %**
     
@@ -42,4 +45,6 @@ addpath('functions/')
 [parms, soln] = run_solver( parms );
 
 
-plot_soln( parms, soln )
+plot_soln( parms, soln );
+
+disp("Done");
