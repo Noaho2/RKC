@@ -74,20 +74,21 @@ while t < parms.T
             u_RK5 = parms.uold + bK_sum2;
             
             s_array = parms.tol .* (0.5 .* abs(u_RK4 - u_RK5)).^(-0.25);
-            
-%            dt_array = s_array .* dt_array;
-           
             s_min = min(s_array);
-
             parms.dt = s_min * parms.dt;
+            %Note: We have the info to give unique dt values for each 
+            % element of u, but trying to keep everything working together
+            % while stepping each element a different amount in time would 
+            % be tricky... I would guess do-able though.
             
             if s_min > .99 % if our step size was adequate, keep results, exit loop.
                 u = u_RK5;
                 break
             else % else if dt was too large, scrap results, try again.
+                %Just a catch to make sure we don't get stuck in inf loop
                 it = it + 1;
-                if it > 10
-                    disp("Houston, we've had a problem here.");
+                if it > 100
+                    disp("Houston, we have a problem.");
                     exit();
                 end
             end 
